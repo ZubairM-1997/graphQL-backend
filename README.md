@@ -21,14 +21,14 @@ If you know a traditional REST API, you know there are multiple endpoints you ca
 		]
 
 What if we only want the title and id from the list of posts?
-Solution 1: Create a new REST API Endpoint
-Problem: We need to make our code more efficient for performance too, too many endpoints hinder that.
+1) Solution 1: Create a new REST API Endpoint
+A) Problem: We need to make our code more efficient for performance too, too many endpoints hinder that.
 
-Solution 2: Use Query Parameters
-Problem: Our code can be hard to understand, we need our code to be readable by other developers in the team.
+2) Solution 2: Use Query Parameters
+B) Problem: Our code can be hard to understand, we need our code to be readable by other developers in the team.
 
-Solution 3: Use GraphQL
-We have one "supercharged" endpoint where we send requests to and its handled by GraphQL. On the client-side, we send queries to that endpoint which tells the server what data it wants to be returned from the back-end
+3) Solution 3: Use GraphQL
+C) We have one "supercharged" endpoint where we send requests to and its handled by GraphQL. On the client-side, we send queries to that endpoint which tells the server what data it wants to be returned from the back-end
 
 It is good to note that from the front-end, we can only do post requests to the GraphQL API, within that post request, we have queries which GraphQL accepts and returns the data that represents the query request.
 
