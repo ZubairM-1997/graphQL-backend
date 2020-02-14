@@ -88,30 +88,25 @@ const RootQuery = new GraphQLObjectType({
 		login: {
 			type: AuthType,
 			args: {email: {type: GraphQLString}, password: {type: GraphQLString}},
-			resolve(parent, args){
-				const user = await User.findOne({email: args.email})
-				if (!user){
-					const error = new Error("User not found")
-					error.code = 401
-					throw error
-				}
+			resolve(parent, {email, password}){
+				return User.findOne({email: email}).then((user) => {
+					const isEqual = bcrypt.compare(password, user.password)
+					if (!isEqual) {
+						throw new Error('Password is incorrect!');
+					}
 
-				const isEqual = await bcrypt.compare(password, args.password)
-				if (!isEqual) {
-					const error = new Error("Invalid  password");
-					error.code = 401;
-					throw error
-				}
+					const token = jwt.sign({
+						userId: user.id,
+						email: user.email},
+						"a_super_secret",
+						{expiresIn: "1h"}
+					)
 
-				const token = jwt.sign({
-					userId: user._id.toString(),
-					email: user.email
-				},
-				"a_super_secret",
-				{expiresIn: "1h"}
-				)
+					return {token: token, userId: user.id}
 
-				return {token: token, userId: user._id.toString()};
+
+				})
+
 			}
 		}
 
@@ -136,13 +131,13 @@ const Mutation = new GraphQLObjectType({
 				email: {type: GraphQLString},
 				password: {type: GraphQLString}
 			},
-			resolve(parent, args){
-				const existingUser = await User.findOne({email: args.email})
-				if (existingUser){
+			async resolve(parent, args){
+				const existingUser =  await User.findOne({email: args.email})
+				if (!existingUser){
 					const error = new Error("User already exists");
 				}
 
-				const encryptedPassword = await bcrypt.hash(args.password, 12)
+				const encryptedPassword =  await bcrypt.hash(args.password, 12)
 
 				let user = new User({
 					name: args.name,
@@ -150,8 +145,8 @@ const Mutation = new GraphQLObjectType({
 					password: encryptedPassword
 				})
 
-				const createdUser = await user.save();
-				return {...createdUser._doc, _id: createdUser._id.toString()}
+				const createdUser =  user.save();
+				return createdUser
 			}
 		},
 
