@@ -5,6 +5,7 @@ const workoutSchema = new Schema({
 	name: String,
 	reps: Number,
 	sets: Number,
+	burnedCalories: Number,
 	userId: String
 })
 

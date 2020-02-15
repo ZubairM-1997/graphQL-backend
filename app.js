@@ -1,6 +1,8 @@
 const express = require("express")
 const app = express();
-const schema = require("./graph-schema/schema")
+const userSchema = require("./graph-schema/userQueries")
+const workoutSchema = require("./graph-schema/workoutQueries")
+const mealSchema = require("./graph-schema/mealQueries")
 const mongoose = require("mongoose")
 
 //connect to mongoDB atlase database
@@ -19,7 +21,9 @@ mongoose.connection.once("open", () => {
 const graphqlHTTP = require("express-graphql")
 
 app.use("/graphql" , graphqlHTTP({
-	schema,
+	userSchema,
+	workoutSchema,
+	mealSchema,
 	graphiql: true
 
 
