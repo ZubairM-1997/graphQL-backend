@@ -2,6 +2,9 @@ const graphql = require("graphql")
 const {WorkoutType} = require("./schema")
 const Workout = require("../models/Workout.js")
 const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, GraphQLList} = graphql;
+const mongoose = require("mongoose")
+
+// "5e497cd5e88bf70c355fbf03"
 
 const WorkoutQuery = new GraphQLObjectType({
 	name: "WorkoutQuery",

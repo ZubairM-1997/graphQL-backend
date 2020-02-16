@@ -2,6 +2,7 @@ const graphql = require("graphql")
 const Workout = require("../models/Workout.js")
 const User = require("../models/User.js")
 const Meal = require("../models/Meal")
+const mongoose = require("mongoose")
 
 const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, GraphQLList} = graphql;
 
@@ -17,14 +18,16 @@ const UserType = new GraphQLObjectType({
 			type: new GraphQLList(WorkoutType),
 			resolve(parent, args){
 				//returns all the workouts created by a user
-				return Workout.findById({userId: parent.id})
+
+
+				return Workout.find({userId: parent.id})
 			}
 		},
 		meals: {
 			type: new GraphQLList(MealType),
 			resolve(parent, args){
 				//returns all the meals created by a user
-				return Meal.findById({userId: parent.id})
+				return Meal.find({userId: parent.id})
 			}
 		}
 
@@ -79,6 +82,7 @@ const MealType = new GraphQLObjectType({
 	name: "Meal",
 	fields: () => ({
 		id: {type: GraphQLID},
+		name: {type: GraphQLString},
 		calories: {type: GraphQLInt},
 		servings: {type: GraphQLInt},
 		nutrition: {type: NutritionType},
