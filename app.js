@@ -4,6 +4,7 @@ const userSchema = require("./graph-schema/userQueries")
 const workoutSchema = require("./graph-schema/workoutQueries")
 const mealSchema = require("./graph-schema/mealQueries")
 const mongoose = require("mongoose")
+const {mergeSchemas} = require("graphql-tools")
 
 //connect to mongoDB atlase database
 mongoose.connect("mongodb+srv://Zubair97:superman2008@cluster0-epauj.mongodb.net/test?retryWrites=true&w=majority")
@@ -11,7 +12,13 @@ mongoose.connection.once("open", () => {
 	console.log("Connected to database")
 })
 
-
+const combinedSchemas = mergeSchemas({
+	schemas: [
+		userSchema,
+		mealSchema,
+		workoutSchema
+	],
+})
 
 
 
@@ -21,9 +28,7 @@ mongoose.connection.once("open", () => {
 const graphqlHTTP = require("express-graphql")
 
 app.use("/graphql" , graphqlHTTP({
-	userSchema,
-	workoutSchema,
-	mealSchema,
+	schema: combinedSchemas,
 	graphiql: true
 
 

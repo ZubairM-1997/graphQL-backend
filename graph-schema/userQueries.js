@@ -8,7 +8,7 @@ const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, G
 
 const UserQuery = new GraphQLObjectType({
 	name: "UserQuery",
-	fields: {
+	fields: () => ({
 		user: {
 			type: UserType,
 			args: {id: {type: GraphQLID}},
@@ -43,7 +43,7 @@ const UserQuery = new GraphQLObjectType({
 		}
 
 
-	}
+	})
 
 
 })

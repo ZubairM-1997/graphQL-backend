@@ -31,6 +31,15 @@ const UserType = new GraphQLObjectType({
 	})
 })
 
+const NutritionType = new GraphQLObjectType({
+	name: "Nutrition",
+	fields: () => ({
+		carbohydrates: {type: GraphQLInt},
+		fats: {type: GraphQLInt},
+		proteins: {type: GraphQLInt}
+	})
+})
+
 
 
 const WorkoutType = new GraphQLObjectType({
@@ -72,11 +81,7 @@ const MealType = new GraphQLObjectType({
 		id: {type: GraphQLID},
 		calories: {type: GraphQLInt},
 		servings: {type: GraphQLInt},
-		nutrition: {
-			carbohydrates: {type: GraphQLInt},
-			fats: {type: GraphQLInt},
-			protein: {type: GraphQLInt}
-		},
+		nutrition: {type: NutritionType},
 		user: {
 			type: UserType,
 			resolve(parent, args){
@@ -95,7 +100,8 @@ module.exports = {
 	AuthType,
 	WorkoutType,
 	UserType,
-	MealType
+	MealType,
+	NutritionType
 }
 
 

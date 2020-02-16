@@ -1,58 +1,73 @@
 const graphql = require("graphql")
-const {MealType} = require("./schema")
+const {MealType, NutritionType} = require("./schema")
 const Meal = require("../models/Meal.js")
-const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, GraphQLList} = graphql;
+const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, GraphQLList, GraphQLInputObjectType} = graphql;
+
+const NutritionInput = new GraphQLInputObjectType({
+	name: "MealNutritionInput",
+	fields: () => ({
+		carbohydrates: {type: GraphQLInt},
+		fats: {type: GraphQLInt},
+		proteins: {type: GraphQLInt}
+	})
+})
+
+
+
 
 const MealQuery = new GraphQLObjectType({
 	name: "MealQueries",
-	meal: {
-		type: MealType,
-		args: {id: {type: GraphQLID}},
-		resolve(parent, args){
-			return Meal.findById(args.id)
-		}
-	},
+	fields: () => ({
+		meal: {
+			type: MealType,
+			args: {id: {type: GraphQLID}},
+			resolve(parent, args){
+				return Meal.findById(args.id)
+			}
+		},
 
-	meals: {
-		type: new GraphQLList(MealType),
-		resolve(parent, args){
-			return Meal.find({})
+		meals: {
+			type: new GraphQLList(MealType),
+			resolve(parent, args){
+				return Meal.find({})
+			}
 		}
-	}
+
+	})
+
 })
 
 const MealMutation = new GraphQLObjectType({
 	name: "MealMutation",
-	addMeal: {
-		type: MealType,
-		args: {
-			name: {type: GraphQLString},
-			servings: {type: GraphQLInt},
-			calories: {type: GraphQLInt},
-			nutrition: {
-				carbohydrates: {type: GraphQLInt},
-				proteins: {type: GraphQLInt},
-				fats: {type: GraphQLInt}
+	fields: () => ({
+		addMeal: {
+			type: MealType,
+			args: {
+				name: {type: GraphQLString},
+				servings: {type: GraphQLInt},
+				calories: {type: GraphQLInt},
+				nutrition: {type: NutritionInput},
+				userId: {type: GraphQLID}
 			},
-			userId: {type: GraphQLID}
-		},
-		resolve(parent, args){
+			resolve(parent, args){
 
-			let meal = new Meal({
-				userId: args.userId,
-				name: args.name,
-				servings: args.servings,
-				calories: args.calories,
-				nutrition: {
-					carbohydrates: args.nutrition.carbohydrates,
-					fats: args.nutrition.fats,
-					proteins: args.nutrition.proteins
-				}
-			})
+				let meal = new Meal({
+					userId: args.userId,
+					name: args.name,
+					servings: args.servings,
+					calories: args.calories,
+					nutrition: {
+						carbohydrates: args.nutrition.carbohydrates,
+						fats: args.nutrition.fats,
+						proteins: args.nutrition.proteins
+					}
+				})
 
-			return meal.save();
+				return meal.save();
+			}
 		}
-	}
+	})
+
 
 })
 

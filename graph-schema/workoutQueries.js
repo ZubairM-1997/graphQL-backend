@@ -5,49 +5,55 @@ const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, G
 
 const WorkoutQuery = new GraphQLObjectType({
 	name: "WorkoutQuery",
-	workout: {
-		type: WorkoutType,
-		args: {id: {type: GraphQLID}},
-		resolve(parent, args){
-			//returns the workout instance from the database
-			return Workout.findById(args.id)
-		}
+	fields: () => ({
+		workout: {
+			type: WorkoutType,
+			args: {id: {type: GraphQLID}},
+			resolve(parent, args){
+				//returns the workout instance from the database
+				return Workout.findById(args.id)
+			}
 
-	},
+		},
 
-	workouts: {
-		type: new GraphQLList(WorkoutType),
-		resolve(parent, args){
-			//returns all workouts from the databse
-			return Workout.find({})
+		workouts: {
+			type: new GraphQLList(WorkoutType),
+			resolve(parent, args){
+				//returns all workouts from the databse
+				return Workout.find({})
+			}
 		}
-	},
+	})
+
 })
 
 const WorkoutMutation = new GraphQLObjectType({
 	name: "WorkoutMutation",
-	addWorkout: {
-		type: WorkoutType,
-		args: {
-			name: {type: GraphQLString},
-			reps: {type: GraphQLInt},
-			sets: {type: GraphQLInt},
-			burnedCalories: {type: GraphQLInt},
-			userId: {type: GraphQLID},
+	fields: () => ({
+		addWorkout: {
+			type: WorkoutType,
+			args: {
+				name: {type: GraphQLString},
+				reps: {type: GraphQLInt},
+				sets: {type: GraphQLInt},
+				burnedCalories: {type: GraphQLInt},
+				userId: {type: GraphQLID},
 
-		},
-		resolve(parent, args){
-			let workout = new Workout({
-				name: args.name,
-				reps: args.reps,
-				sets: args.sets,
-				burnedCalories: args.burnedCalories,
-				userId: args.userId
-			})
+			},
+			resolve(parent, args){
+				let workout = new Workout({
+					name: args.name,
+					reps: args.reps,
+					sets: args.sets,
+					burnedCalories: args.burnedCalories,
+					userId: args.userId
+				})
 
-			return workout.save();
+				return workout.save();
+			}
 		}
-	},
+	})
+
 
 })
 
