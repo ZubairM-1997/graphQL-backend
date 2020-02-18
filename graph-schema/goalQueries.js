@@ -7,10 +7,13 @@ const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, G
 const GoalQueries = new GraphQLObjectType({
 	name: "Goal Queries",
 	fields: () => ({
-		goal: {type: GoalType},
-		args: {id: {type: GraphQLID}},
-		resolve(parent, args){
-			return Goal.findById(args.id)
+		goal: {
+			type: GoalType,
+			args: {id:  {type: GraphQLID}},
+			resolve(parent, args){
+				return Goal.findById(args.id)
+			}
+
 		}
 	})
 })

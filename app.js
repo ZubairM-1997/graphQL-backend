@@ -3,6 +3,8 @@ const app = express();
 const userSchema = require("./graph-schema/userQueries")
 const workoutSchema = require("./graph-schema/workoutQueries")
 const mealSchema = require("./graph-schema/mealQueries")
+const goalSchema = require("./graph-schema/goalQueries")
+const statsSchema = require("./graph-schema/statsQueries")
 const mongoose = require("mongoose")
 const {mergeSchemas} = require("graphql-tools")
 
@@ -16,7 +18,9 @@ const combinedSchemas = mergeSchemas({
 	schemas: [
 		userSchema,
 		mealSchema,
-		workoutSchema
+		workoutSchema,
+		goalSchema,
+		statsSchema
 	],
 })
 

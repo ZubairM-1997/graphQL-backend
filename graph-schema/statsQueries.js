@@ -18,7 +18,7 @@ const StatsQuery = new GraphQLObjectType({
 
 const StatsMutation = new GraphQLObjectType({
 	name: "Stats Mutation",
-	field: () => ({
+	fields: () => ({
 		addStats: {
 			type: StatsType,
 			args: {
@@ -75,4 +75,9 @@ const StatsMutation = new GraphQLObjectType({
 
 		}
 	})
+})
+
+module.exports = new GraphQLSchema({
+	query: StatsQuery,
+	mutation: StatsMutation
 })
