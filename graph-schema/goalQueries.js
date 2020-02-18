@@ -4,6 +4,7 @@ const Goal = require("../models/Goal.js")
 const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, GraphQLList, GraphQLInputObjectType} = graphql
 
 
+
 const GoalQueries = new GraphQLObjectType({
 	name: "Goal Queries",
 	fields: () => ({
@@ -38,14 +39,6 @@ const GoalMutations = new GraphQLObjectType({
 				})
 
 				return userGoal.save();
-			}
-		},
-
-		deleteGoal: {
-			type: GoalType,
-			args: {userId: GraphQLID},
-			resolve(parent, args){
-				Goal.findOneAndDelete({userId: args.userId})
 			}
 		}
 	})
