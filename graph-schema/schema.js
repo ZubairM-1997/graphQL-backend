@@ -2,9 +2,11 @@ const graphql = require("graphql")
 const Workout = require("../models/Workout.js")
 const User = require("../models/User.js")
 const Meal = require("../models/Meal")
-const mongoose = require("mongoose")
+const Goal = require("../models/Goal")
+const Stats = require("../models/Stats")
 
-const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, GraphQLList} = graphql;
+
+const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLInt, GraphQLList} = graphql;
 
 //describes what attributes and its types, a User has in each query
 const UserType = new GraphQLObjectType({
@@ -18,8 +20,6 @@ const UserType = new GraphQLObjectType({
 			type: new GraphQLList(WorkoutType),
 			resolve(parent, args){
 				//returns all the workouts created by a user
-
-
 				return Workout.find({userId: parent.id})
 			}
 		},
@@ -28,6 +28,61 @@ const UserType = new GraphQLObjectType({
 			resolve(parent, args){
 				//returns all the meals created by a user
 				return Meal.find({userId: parent.id})
+			}
+		},
+		stats: {
+
+			//returns the stats object created by a user
+			type: StatsType,
+			resolve(parent, args){
+				return Stats.find({userId: parent.id})
+			}
+		},
+
+		goals: {
+			//returns the goals object created by the user
+			type: GoalType,
+			resolve(parent, args){
+				return Goal.find({userId: parent.id})
+			}
+		}
+
+	})
+})
+
+
+const GoalType = new GraphQLObjectType({
+	name: "Goal",
+	fields: () => ({
+		id: {type: GraphQLID},
+		goalWeight: {type: GraphQLInt},
+		caloricGoal: {type: GraphQLInt},
+		healthGoal: {type: GraphQLString},
+		user: {
+			type: UserType,
+			resolve(parent, args){
+				//returns the user from the database that created the workout instance
+				return User.findById(parent.userId)
+			}
+		}
+	})
+})
+
+const StatsType = new GraphQLObjectType({
+	name: "Stats",
+	fields: () => ({
+		height: {type: GraphQLInt},
+		wieght: {type: GraphQLInt},
+		age: {type: GraphQLInt},
+		bodyMassIndex: {type: GraphQLInt},
+		optimumCalories: {type: GraphQLInt},
+		bodyType: {type: GraphQLString},
+		gender: {type: GraphQLString},
+		user: {
+			type: UserType,
+			resolve(parent, args){
+				//returns the user from the database that created the workout instance
+				return User.findById(parent.userId)
 			}
 		}
 
@@ -105,7 +160,9 @@ module.exports = {
 	WorkoutType,
 	UserType,
 	MealType,
-	NutritionType
+	NutritionType,
+	GoalType,
+	StatsType
 }
 
 
