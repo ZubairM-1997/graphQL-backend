@@ -28,7 +28,13 @@ const StatsMutation = new GraphQLObjectType({
 				userId: {type: GraphQLID},
 				gender: {type: GraphQLString}
 			},
-			resolve(parent, args){
+			async resolve(parent, args){
+
+				const found = await Stats.find({userId: args.userId})
+				if (found){
+					return Error("You have already created your stats")
+				}
+
 				let height = args.height / 100
 				let bmi = Math.floor(args.weight / (height * height))
 				console.log(bmi)

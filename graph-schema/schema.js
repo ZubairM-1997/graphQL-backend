@@ -31,9 +31,8 @@ const UserType = new GraphQLObjectType({
 			}
 		},
 		stats: {
-
 			//returns the stats object created by a user
-			type: StatsType,
+			type: new GraphQLList(StatsType),
 			resolve(parent, args){
 				return Stats.find({userId: parent.id})
 			}
@@ -41,7 +40,7 @@ const UserType = new GraphQLObjectType({
 
 		goals: {
 			//returns the goals object created by the user
-			type: GoalType,
+			type: new GraphQLList(GoalType),
 			resolve(parent, args){
 				return Goal.find({userId: parent.id})
 			}

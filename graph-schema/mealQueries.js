@@ -51,20 +51,18 @@ const MealMutation = new GraphQLObjectType({
 			},
 			resolve(parent, args){
 
-				let mealsOwnedByAUser = Meal.find({userId: args.userId}).lean()
-				console.log(mealsOwnedByAUser)
-				let totalCalories = mealsOwnedByAUser.for
+				let nutritionObj = {
+					carbohydrates: args.nutrition.carbohydrates,
+					fats: args.nutrition.fats,
+					proteins: args.nutrition.proteins
+				}
 
 				let meal = new Meal({
 					userId: args.userId,
 					name: args.name,
 					servings: args.servings,
 					calories: args.calories,
-					nutrition: {
-						carbohydrates: args.nutrition.carbohydrates,
-						fats: args.nutrition.fats,
-						proteins: args.nutrition.proteins
-					}
+					nutrition: nutritionObj
 				})
 
 				return meal.save();
