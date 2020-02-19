@@ -54,9 +54,9 @@ const GoalType = new GraphQLObjectType({
 	name: "Goal",
 	fields: () => ({
 		id: {type: GraphQLID},
-		goalweight: {type: GraphQLInt},
-		caloricgoal: {type: GraphQLInt},
-		healthgoal: {type: GraphQLString},
+		goalWeight: {type: GraphQLInt},
+		caloricGoal: {type: GraphQLInt},
+		healthGoal: {type: GraphQLString},
 		user: {
 			type: UserType,
 			resolve(parent, args){

@@ -30,21 +30,19 @@ const GoalMutations = new GraphQLObjectType({
 				healthGoal: {type: GraphQLString},
 				userId: {type: GraphQLID}
 			},
-			async resolve(parent, args){
+			resolve(parent, args){
 
-				const found = await Goal.find({userId: args.userId})
-				if(found){
-					return Error("You have already created a fitness goal, stick with it!")
-				}
 
-				let userGoal = new Goal({
-					goalWeight: args.goalWeight,
-					caloricGoal: args.caloricGoal,
-					healthGoal: args.healthGoal,
-					userId: args.userId
-				})
 
-				return userGoal.save();
+					let userGoal = new Goal({
+						goalWeight: args.goalWeight,
+						caloricGoal: args.caloricGoal,
+						healthGoal: args.healthGoal,
+						userId: args.userId
+					})
+
+					return userGoal.save();
+
 			}
 		}
 	})

@@ -28,57 +28,49 @@ const StatsMutation = new GraphQLObjectType({
 				userId: {type: GraphQLID},
 				gender: {type: GraphQLString}
 			},
-			async resolve(parent, args){
+			resolve(parent, args){
 
-				const found = await Stats.find({userId: args.userId})
-				if (found){
-					return Error("You have already created your stats")
-				}
+					let height = args.height / 100
+					let bmi = Math.floor(args.weight / (height * height))
+					console.log(bmi)
+					let gender = args.gender
+					let optimumCaloricIntake;
+					let bodyTypeClassification;
 
-				let height = args.height / 100
-				let bmi = Math.floor(args.weight / (height * height))
-				console.log(bmi)
-				let gender = args.gender
-				let optimumCaloricIntake;
-				let bodyTypeClassification;
+					switch(gender){
+						case "Female":
+							optimumCaloricIntake = Math.floor(655.1 + 9.6 * args.weight + 1.9 * args.height / (4.7 * args.age))
 
-				switch(gender){
-					case "Female":
-						optimumCaloricIntake = Math.floor(655.1 + 9.6 * args.weight + 1.9 * args.height / (4.7 * args.age))
+						break;
 
-					break;
+						case "Male":
+							optimumCaloricIntake = Math.floor(66.5 + 13.8 * args.weight + 5 * args.height / (6.8 * args.age))
+						break;
+					}
 
-					case "Male":
-						optimumCaloricIntake = Math.floor(66.5 + 13.8 * args.weight + 5 * args.height / (6.8 * args.age))
-					break;
-				}
-
-				if (bmi <= 18.5){
-					bodyTypeClassification = "Underweight"
-				} else if (bmi > 18.5 && bmi <= 24.9){
-					bodyTypeClassification = "Healthy Weight"
-				}else if (bmi >= 25 && bmi <= 29.9){
-					bodyTypeClassification = "Overweight"
-				}else {
-					bodyTypeClassification = "Obese"
-				}
+					if (bmi <= 18.5){
+						bodyTypeClassification = "Underweight"
+					} else if (bmi > 18.5 && bmi <= 24.9){
+						bodyTypeClassification = "Healthy Weight"
+					}else if (bmi >= 25 && bmi <= 29.9){
+						bodyTypeClassification = "Overweight"
+					}else {
+						bodyTypeClassification = "Obese"
+					}
 
 
-				let stats = new Stats({
-					height: args.height,
-					weight: args.weight,
-					age: args.age,
-					bodymassIndex: bmi,
-					optimumCalories: optimumCaloricIntake,
-					bodyType: bodyTypeClassification,
-					gender: args.gender,
-					userId: args.userId
-				})
+					let stats = new Stats({
+						height: args.height,
+						weight: args.weight,
+						age: args.age,
+						bodymassIndex: bmi,
+						optimumCalories: optimumCaloricIntake,
+						bodyType: bodyTypeClassification,
+						gender: args.gender,
+						userId: args.userId
+					})
 
-				return stats.save()
-
-
-
+					return stats.save()
 			}
 
 		}

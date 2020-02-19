@@ -1,6 +1,7 @@
 const graphql = require("graphql")
 const {MealType, NutritionType} = require("./schema")
 const Meal = require("../models/Meal.js")
+const Goal = require("../models/Goal")
 const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, GraphQLList, GraphQLInputObjectType} = graphql;
 
 const NutritionInput = new GraphQLInputObjectType({
@@ -49,7 +50,11 @@ const MealMutation = new GraphQLObjectType({
 				nutrition: {type: NutritionInput},
 				userId: {type: GraphQLID}
 			},
-			resolve(parent, args){
+			async resolve(parent, args){
+				const goal = Goal.find({userId: args.userId})
+				if(goal){
+					console.log(goal.caloricGoal)
+				}
 
 				let nutritionObj = {
 					carbohydrates: args.nutrition.carbohydrates,
