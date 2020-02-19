@@ -55,9 +55,9 @@ const GoalType = new GraphQLObjectType({
 	name: "Goal",
 	fields: () => ({
 		id: {type: GraphQLID},
-		goalWeight: {type: GraphQLInt},
-		caloricGoal: {type: GraphQLInt},
-		healthGoal: {type: GraphQLString},
+		goalweight: {type: GraphQLInt},
+		caloricgoal: {type: GraphQLInt},
+		healthgoal: {type: GraphQLString},
 		user: {
 			type: UserType,
 			resolve(parent, args){
@@ -72,9 +72,9 @@ const StatsType = new GraphQLObjectType({
 	name: "Stats",
 	fields: () => ({
 		height: {type: GraphQLInt},
-		wieght: {type: GraphQLInt},
+		weight: {type: GraphQLInt},
 		age: {type: GraphQLInt},
-		bodyMassIndex: {type: GraphQLInt},
+		bodymassIndex: {type: GraphQLInt},
 		optimumCalories: {type: GraphQLInt},
 		bodyType: {type: GraphQLString},
 		gender: {type: GraphQLString},

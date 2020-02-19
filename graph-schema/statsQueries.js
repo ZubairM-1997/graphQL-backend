@@ -4,7 +4,7 @@ const Stats = require("../models/Stats.js")
 const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, GraphQLList} = graphql;
 
 const StatsQuery = new GraphQLObjectType({
-	name: "Stats Query",
+	name: "StatsQuery",
 	fields: () => ({
 		stats: {
 			type: StatsType,
@@ -17,7 +17,7 @@ const StatsQuery = new GraphQLObjectType({
 })
 
 const StatsMutation = new GraphQLObjectType({
-	name: "Stats Mutation",
+	name: "StatsMutation",
 	fields: () => ({
 		addStats: {
 			type: StatsType,
@@ -29,7 +29,9 @@ const StatsMutation = new GraphQLObjectType({
 				gender: {type: GraphQLString}
 			},
 			resolve(parent, args){
-				let bmi = Math.floor(args.weight / (args.height * args.height))
+				let height = args.height / 100
+				let bmi = Math.floor(args.weight / (height * height))
+				console.log(bmi)
 				let gender = args.gender
 				let optimumCaloricIntake;
 				let bodyTypeClassification;
@@ -60,7 +62,7 @@ const StatsMutation = new GraphQLObjectType({
 					height: args.height,
 					weight: args.weight,
 					age: args.age,
-					bodyMassIndex: bmi,
+					bodymassIndex: bmi,
 					optimumCalories: optimumCaloricIntake,
 					bodyType: bodyTypeClassification,
 					gender: args.gender,

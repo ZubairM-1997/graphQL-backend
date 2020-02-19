@@ -6,7 +6,7 @@ const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLInt, G
 
 
 const GoalQueries = new GraphQLObjectType({
-	name: "Goal Queries",
+	name: "GoalQueries",
 	fields: () => ({
 		goal: {
 			type: GoalType,
@@ -20,7 +20,7 @@ const GoalQueries = new GraphQLObjectType({
 })
 
 const GoalMutations = new GraphQLObjectType({
-	name: "Goal Mutations",
+	name: "GoalMutations",
 	fields: () => ({
 		addGoal: {
 			type: GoalType,
